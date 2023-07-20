@@ -5,6 +5,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
@@ -21,14 +22,15 @@ import java.util.Objects;
 @Configuration
 @EnableWebMvc
 @ComponentScan("ru.egorov.electroniclibrary")
+@PropertySource("classpath:/properties/database.properties")
 public class SpringConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
-    // private final Environment environment;
+     private final Environment environment;
 
     @Autowired
     public SpringConfig(ApplicationContext applicationContext, Environment environment) {
         this.applicationContext = applicationContext;
-        // this.environment = environment;
+         this.environment = environment;
     }
 
     // Настройки шаблонизатора
@@ -58,7 +60,6 @@ public class SpringConfig implements WebMvcConfigurer {
     }
 
 
-    /*
 
     // Database
 
@@ -79,6 +80,6 @@ public class SpringConfig implements WebMvcConfigurer {
     public JdbcTemplate jdbcTemplate(){
         return new JdbcTemplate(dataSource());
     }
-    */
+
 
 }

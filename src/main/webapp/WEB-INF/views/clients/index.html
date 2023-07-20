@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Clients</title>
+</head>
+<body>
+
+<div th:each="client : ${clients}">
+    <a th:href="@{/clients/{id}(id=${client.getId()})}"
+            th:text="${client.getSurname() + ' ' + client.getName() + ' ' + client.getDateOfBirth()}">client</a>
+</div>
+
+<form th:method="GET" th:action="@{/clients/new}">
+    <input type="submit" value="Add client">
+</form>
+
+</body>
+</html>
