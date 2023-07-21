@@ -46,8 +46,8 @@ public class ClientDAO {
     // Validation
 
     public Optional<Client> checkingForFullness(Client client){
-        return jdbcTemplate.query("SELECT * FROM client WHERE name=? and surname=? and date_of_birth=?;", new ClientMapper(),
-                client.getName(), client.getSurname(), client.getDateOfBirth()).stream().findAny();
+        return jdbcTemplate.query("SELECT * FROM client WHERE name=? and surname=? and date_of_birth=? and client_id <> ?;",
+                new ClientMapper(), client.getName(), client.getSurname(), client.getDateOfBirth(), client.getId()).stream().findAny();
     }
 
 }

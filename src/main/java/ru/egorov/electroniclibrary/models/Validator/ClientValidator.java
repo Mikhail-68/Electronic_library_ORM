@@ -34,12 +34,12 @@ public class ClientValidator implements Validator {
         // check date
         if(!client.getDateOfBirth().isBefore(LocalDate.now())
                 || !client.getDateOfBirth().isAfter(LocalDate.now().minusYears(120))){
-            errors.rejectValue("dateOfBirth", "", "Error date of birth valid");
+            errors.rejectValue("dateOfBirth", "", "Проверьте дату рождения");
         }
 
         // check client in db
         if(clientDAO.checkingForFullness(client).isPresent()){
-            errors.rejectValue("id", "", "This client is already exists");
+            errors.rejectValue("id", "", "Данный клиент уже зарегистрирован");
         }
 
     }
