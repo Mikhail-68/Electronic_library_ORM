@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавить автора</title>
+</head>
+<body>
+
+<form th:method="POST" th:action="@{/authors}" th:object="${author}">
+    <label for="name">Фамилия автора и его инициалы (Достоевский Ф.М.): </label>
+    <input id="name" type="text" th:field="*{name}"><br>
+    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Error</div>
+
+    <input type="submit" value="Добавить!">
+
+</form>
+
+</body>
+</html>

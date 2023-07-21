@@ -20,6 +20,7 @@
     <select th:field="${book.author.id}" id="author">
         <option th:each="author : ${authors}" th:value="${author.getId()}" th:text="${author.getName()}"></option>
     </select>
+    <a th:href="@{/authors/new}">Добавить</a>
     <br>
 
     <label for="year">Год выпуска: </label>
