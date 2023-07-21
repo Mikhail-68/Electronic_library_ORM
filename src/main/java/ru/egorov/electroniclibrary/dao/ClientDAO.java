@@ -1,11 +1,15 @@
 package ru.egorov.electroniclibrary.dao;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
 import ru.egorov.electroniclibrary.dao.mapper.ClientMapper;
 import ru.egorov.electroniclibrary.models.Client;
 
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class ClientDAO {
@@ -21,7 +25,7 @@ public class ClientDAO {
     }
 
     public Client get(int id) {
-        return jdbcTemplate.query("SELECT * FROM client WHERE client_id=?", new Object[]{id}, new ClientMapper())
+        return jdbcTemplate.query("SELECT * FROM client WHERE client_id=?", new ClientMapper(), id)
                 .stream().findAny().orElse(null);
     }
 
@@ -37,6 +41,13 @@ public class ClientDAO {
 
     public void delete(int id) {
         jdbcTemplate.update("DELETE FROM client WHERE client_id=?", id);
+    }
+
+    // Validation
+
+    public Optional<Client> checkingForFullness(Client client){
+        return jdbcTemplate.query("SELECT * FROM client WHERE name=? and surname=? and date_of_birth=?;", new ClientMapper(),
+                client.getName(), client.getSurname(), client.getDateOfBirth()).stream().findAny();
     }
 
 }

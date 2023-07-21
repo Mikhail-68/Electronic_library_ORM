@@ -1,12 +1,27 @@
 package ru.egorov.electroniclibrary.models;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Client {
     private int id;
+    @NotEmpty(message = "Name should not is empty")
+    @Size(min = 2, max = 50, message = "Name should be between 2 and 50 characters")
+    @Pattern(regexp = "\\D{2,50}", message = "regexp")
     private String name;
+    @NotEmpty(message = "Surname should not is empty")
+    @Size(min = 2, max = 50, message = "Name should be between 2 and 50 characters")
+    @Pattern(regexp = "\\D{2,50}", message = "regexp")
     private String surname;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
+    @NotEmpty(message = "Phone should not is empty")
+    @Pattern(regexp = "\\d{1}\\s{1}[(]{1}\\d{3}[)]{1}\\s{1}\\d{3}[-]{1}\\d{2}[-]{1}\\d{2}", message = "Phone is not formatted")
     private String phone;
 
     public Client() {
@@ -47,6 +62,11 @@ public class Client {
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
+
+//    public LocalDate getDateOfBirthByDate(){
+//        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+//        return LocalDate.parse(dateOfBirth, df);
+//    }
 
     public void setDateOfBirth(LocalDate date_of_birth) {
         this.dateOfBirth = date_of_birth;

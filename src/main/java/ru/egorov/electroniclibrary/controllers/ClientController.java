@@ -1,19 +1,25 @@
 package ru.egorov.electroniclibrary.controllers;
 
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.egorov.electroniclibrary.dao.ClientDAO;
 import ru.egorov.electroniclibrary.models.Client;
+import ru.egorov.electroniclibrary.models.Validator.ClientValidator;
 
 @Controller
 @RequestMapping("/clients")
 public class ClientController {
 
     private final ClientDAO clientDAO;
-
-    public ClientController(ClientDAO clientDAO) {
+    private final ClientValidator clientValidator;
+    @Autowired
+    public ClientController(ClientDAO clientDAO, ClientValidator clientValidator) {
         this.clientDAO = clientDAO;
+        this.clientValidator = clientValidator;
     }
 
     @GetMapping
@@ -36,11 +42,16 @@ public class ClientController {
     }
 
     @PostMapping("/new")
-    public String createClient(@ModelAttribute("client") Client client) {
+    public String createClient(@ModelAttribute("client") @Valid Client client, BindingResult bindingResult) {
+
+        if(bindingResult.hasErrors())
+            return "clients/new";
+        clientValidator.validate(client, bindingResult);
+        if(bindingResult.hasErrors())
+            return "clients/new";
         clientDAO.add(client);
         return "redirect:/clients";
     }
-
 
     // edit
 
@@ -51,7 +62,13 @@ public class ClientController {
     }
 
     @PatchMapping("/{id}")
-    public String updateClient(@PathVariable("id") int id, @ModelAttribute("client") Client client) {
+    public String updateClient(@PathVariable("id") int id, @ModelAttribute("client") @Valid Client client,
+                               BindingResult bindingResult) {
+        if(bindingResult.hasErrors())
+            return "/clients/edit";
+        clientValidator.validate(client, bindingResult);
+        if(bindingResult.hasErrors())
+            return "/clients/edit";
         client.setId(id);
         clientDAO.update(client);
         return "redirect:/clients";
