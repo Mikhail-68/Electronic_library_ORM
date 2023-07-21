@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактировать книгу</title>
+</head>
+<body>
+
+<form th:method="PATCH" th:action="@{/books/{id} (id=${book.getId()}) }" th:object="${book}">
+    <label for="isbn">ISBN: </label>
+    <input id="isbn" type="text" th:field="*{isbn}"><br>
+    <div style="color:red" th:if="${#fields.hasErrors('isbn')}" th:errors="*{isbn}">Error</div>
+
+    <label for="title">Название книги: </label>
+    <input id="title" type="text" th:field="*{title}"><br>
+    <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Error</div>
+
+    <!--    Author-->
+    <label for="author">Автор: </label>
+    <select th:field="${book.author.id}" id="author">
+        <option th:each="author : ${authors}" th:value="${author.getId()}" th:text="${author.getName()}"></option>
+    </select>
+    <br>
+
+    <label for="year">Год выпуска: </label>
+    <input id="year" type="text" th:field="*{yearPublication}"><br>
+    <div style="color:red" th:if="${#fields.hasErrors('yearPublication')}" th:errors="*{yearPublication}">Error</div>
+
+    <label for="amount">Общее количество книг в библиотеке: </label>
+    <input id="amount" type="text" th:field="*{amount}"><br>
+    <div style="color:red" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">Error</div>
+
+    <input type="submit" value="Обновить!">
+    <!--    isbn, title, [author], year, amount-->
+</form>
+
+</body>
+</html>
