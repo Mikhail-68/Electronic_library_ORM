@@ -2,31 +2,31 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>New client</title>
+    <title>Новый клиент</title>
 </head>
 <body>
 
 <form th:method="POST" th:action="@{/clients/new}" th:object="${client}">
-    <label for="name">Name: </label>
+    <label for="name">Имя: </label>
     <input id="name" type="text" th:field="*{name}"><br>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name error</div>
 
-    <label for="surname">Surname: </label>
+    <label for="surname">Фамилия: </label>
     <input id="surname" type="text" th:field="*{surname}"><br>
     <div style="color:red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">Surname error</div>
 
-    <label for="date_of_birth">Date of birth: </label>
+    <label for="date_of_birth">Дата рождения: </label>
     <input id="date_of_birth" type="date" th:field="*{dateOfBirth}"><br>
     <div style="color:red" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">Date error</div>
 
-    <label for="phone">Phone: </label>
+    <label for="phone">Телефон (Формат: "x (xxx) xxx-xx-xx"): </label>
     <input id="phone" type="text" th:field="*{phone}"><br>
     <div style="color:red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone error</div>
     <div style="color:red" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">Client error</div>
 
     <br>
 
-    <input type="submit" value="Create!">
+    <input type="submit" value="Создать!">
 
 </form>
 

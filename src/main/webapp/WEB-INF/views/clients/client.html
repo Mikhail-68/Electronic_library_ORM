@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Client Info</title>
+    <title>Информация о клиенте</title>
 </head>
 <body>
 
@@ -10,11 +10,11 @@
 <div th:text="${client.getPhone()}">client phone</div>
 
 <form th:action="@{/clients/{id}/edit (id=${client.getId()}) }">
-    <input type="submit" value="Edit">
+    <input type="submit" value="Редактировать">
 </form>
 
 <form th:method="DELETE" th:action="@{/clients/{id} (id=${client.getId()}) }">
-    <input type="submit" value="DELETE!">
+    <input style="color:red" type="submit" value="Удалить!">
 </form>
 
 </body>

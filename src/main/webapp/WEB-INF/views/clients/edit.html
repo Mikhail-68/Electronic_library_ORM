@@ -2,29 +2,29 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit client</title>
+    <title>Редактирование клиента</title>
 </head>
 <body>
 
 <form th:method="PATCH" th:action="@{/clients/{id} (id=${client.getId()}) }" th:object="${client}">
-    <label for="name">Name: </label>
+    <label for="name">Имя: </label>
     <input id="name" type="text" th:field="*{name}"><br>
     <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">error</div>
 
-    <label for="surname">Surname: </label>
+    <label for="surname">Фамилия: </label>
     <input id="surname" type="text" th:field="*{surname}"><br>
     <div style="color:red" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">error</div>
 
-    <label for="date_of_birth">Date of birth: </label>
+    <label for="date_of_birth">Дата рождения: </label>
     <input id="date_of_birth" type="date" th:field="*{dateOfBirth}"><br>
     <div style="color:red" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">error</div>
 
-    <label for="phone">Phone: </label>
+    <label for="phone">Телефон (Формат: "x (xxx) xxx-xx-xx"): </label>
     <input id="phone" type="text" th:field="*{phone}"><br>
     <div style="color:red" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">error</div>
     <div style="color:red" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">error</div>
 
-    <input type="submit" value="Update!">
+    <input type="submit" value="Обновить!">
 
 </form>
 
