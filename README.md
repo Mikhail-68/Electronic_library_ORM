@@ -1,2 +1,2 @@
-**Electronic Library JDBC**
+**Electronic Library ORM**
 -
