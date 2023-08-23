@@ -6,31 +6,32 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.egorov.electroniclibrary.dao.ClientDAO;
 import ru.egorov.electroniclibrary.models.Client;
 import ru.egorov.electroniclibrary.models.Validator.ClientValidator;
+import ru.egorov.electroniclibrary.services.ClientService;
 
 @Controller
 @RequestMapping("/clients")
 public class ClientController {
 
-    private final ClientDAO clientDAO;
+    private final ClientService clientService;
     private final ClientValidator clientValidator;
+
     @Autowired
-    public ClientController(ClientDAO clientDAO, ClientValidator clientValidator) {
-        this.clientDAO = clientDAO;
+    public ClientController(ClientService clientService, ClientValidator clientValidator) {
+        this.clientService = clientService;
         this.clientValidator = clientValidator;
     }
 
     @GetMapping
     public String showListClients(Model model) {
-        model.addAttribute("clients", clientDAO.getAll());
+        model.addAttribute("clients", clientService.findAll());
         return "clients/index";
     }
 
     @GetMapping("/{id}")
     public String showClientInfo(@PathVariable("id") int id, Model model) {
-        model.addAttribute("client", clientDAO.get(id));
+        model.addAttribute("client", clientService.findById(id));
         return "clients/client";
     }
 
@@ -49,7 +50,8 @@ public class ClientController {
         clientValidator.validate(client, bindingResult);
         if(bindingResult.hasErrors())
             return "clients/new";
-        clientDAO.add(client);
+
+        clientService.save(client);
         return "redirect:/clients";
     }
 
@@ -57,7 +59,7 @@ public class ClientController {
 
     @GetMapping("/{id}/edit")
     public String showEditPage(@PathVariable("id") int id, Model model) {
-        model.addAttribute("client", clientDAO.get(id));
+        model.addAttribute("client", clientService.findById(id));
         return "clients/edit";
     }
 
@@ -69,8 +71,8 @@ public class ClientController {
         clientValidator.validate(client, bindingResult);
         if(bindingResult.hasErrors())
             return "/clients/edit";
-        client.setId(id);
-        clientDAO.update(client);
+
+        clientService.update(id, client);
         return "redirect:/clients";
     }
 
@@ -78,7 +80,7 @@ public class ClientController {
 
     @DeleteMapping("/{id}")
     public String deleteClient(@PathVariable("id") int id) {
-        clientDAO.delete(id);
+        clientService.deleteById(id);
         return "redirect:/clients";
     }
 }

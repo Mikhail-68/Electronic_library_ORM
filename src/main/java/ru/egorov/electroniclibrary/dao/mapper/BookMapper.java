@@ -3,9 +3,8 @@ package ru.egorov.electroniclibrary.dao.mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-import ru.egorov.electroniclibrary.dao.AuthorDAO;
-import ru.egorov.electroniclibrary.models.Author;
 import ru.egorov.electroniclibrary.models.Book;
+import ru.egorov.electroniclibrary.repositories.AuthorRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,8 +13,7 @@ import java.sql.SQLException;
 public class BookMapper implements RowMapper<Book> {
 
     @Autowired
-    private AuthorDAO authorDAO;
-
+    private AuthorRepository authorRepository;
 
     @Override
     public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -28,7 +26,7 @@ public class BookMapper implements RowMapper<Book> {
 
 //        System.out.println(authorDAO);
 
-        book.setAuthor(authorDAO.get(rs.getInt("author_id")).orElse(null));
+        book.setAuthor(authorRepository.findById(rs.getInt("author_id")).orElse(null));
 
         return book;
     }

@@ -4,17 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-import ru.egorov.electroniclibrary.dao.AuthorDAO;
 import ru.egorov.electroniclibrary.models.Author;
+import ru.egorov.electroniclibrary.repositories.AuthorRepository;
 
 @Component
 public class AuthorValidator implements Validator {
 
-    private final AuthorDAO authorDAO;
+    private final AuthorRepository authorRepository;
 
     @Autowired
-    public AuthorValidator(AuthorDAO authorDAO) {
-        this.authorDAO = authorDAO;
+    public AuthorValidator(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
     }
 
     @Override
@@ -25,7 +25,7 @@ public class AuthorValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Author author = (Author) target;
-        if(authorDAO.get(author.getName()).isPresent()){
+        if(authorRepository.findByName(author.getName()).isPresent()){
             errors.rejectValue("name", "", "Данный автор уже существует");
         }
     }
