@@ -11,7 +11,6 @@ import java.sql.SQLException;
 
 @Component
 public class BookMapper implements RowMapper<Book> {
-
     @Autowired
     private AuthorRepository authorRepository;
 
@@ -23,6 +22,8 @@ public class BookMapper implements RowMapper<Book> {
         book.setTitle(rs.getString("title"));
         book.setYearPublication(rs.getInt("year_publication"));
         book.setAmount(rs.getInt("amount"));
+        book.setPricePerDay(rs.getInt("price_per_day"));
+        book.setRemainder(rs.getInt("remainder"));
 
 //        System.out.println(authorDAO);
 

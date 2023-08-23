@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.egorov.electroniclibrary.models.Client;
 import ru.egorov.electroniclibrary.models.Validator.ClientValidator;
 import ru.egorov.electroniclibrary.services.ClientService;
+import ru.egorov.electroniclibrary.services.RentService;
 
 @Controller
 @RequestMapping("/clients")
@@ -16,11 +17,13 @@ public class ClientController {
 
     private final ClientService clientService;
     private final ClientValidator clientValidator;
+    private final RentService rentService;
 
     @Autowired
-    public ClientController(ClientService clientService, ClientValidator clientValidator) {
+    public ClientController(ClientService clientService, ClientValidator clientValidator, RentService rentService) {
         this.clientService = clientService;
         this.clientValidator = clientValidator;
+        this.rentService = rentService;
     }
 
     @GetMapping
@@ -32,6 +35,7 @@ public class ClientController {
     @GetMapping("/{id}")
     public String showClientInfo(@PathVariable("id") int id, Model model) {
         model.addAttribute("client", clientService.findById(id));
+        model.addAttribute("rents", rentService.getByClient(id));
         return "clients/client";
     }
 
@@ -64,7 +68,8 @@ public class ClientController {
     }
 
     @PatchMapping("/{id}")
-    public String updateClient(@PathVariable("id") int id, @ModelAttribute("client") @Valid Client client,
+    public String updateClient(@PathVariable("id") int id,
+                               @ModelAttribute("client") @Valid Client client,
                                BindingResult bindingResult) {
         if(bindingResult.hasErrors())
             return "/clients/edit";
