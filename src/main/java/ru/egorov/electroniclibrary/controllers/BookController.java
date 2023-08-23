@@ -1,23 +1,24 @@
 package ru.egorov.electroniclibrary.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.egorov.electroniclibrary.dao.AuthorDAO;
 import ru.egorov.electroniclibrary.dao.BookDAO;
 import ru.egorov.electroniclibrary.models.Book;
+import ru.egorov.electroniclibrary.repositories.AuthorRepository;
 
 @Controller
 @RequestMapping("/books")
 public class BookController {
 
-    private final AuthorDAO authorDAO;
+    private final AuthorRepository authorRepository;
     private final BookDAO bookDAO;
 
     @Autowired
-    public BookController(AuthorDAO authorDAO, BookDAO bookDAO) {
-        this.authorDAO = authorDAO;
+    public BookController(AuthorRepository authorRepository, BookDAO bookDAO) {
+        this.authorRepository = authorRepository;
         this.bookDAO = bookDAO;
     }
 
@@ -37,7 +38,7 @@ public class BookController {
 
     @GetMapping("/new")
     public String showCreatePage(@ModelAttribute("book") Book book, Model model) {
-        model.addAttribute("authors", authorDAO.getAll());
+        model.addAttribute("authors", authorRepository.findAll(Sort.by("name")));
         return "books/new";
     }
 
@@ -52,7 +53,7 @@ public class BookController {
     @GetMapping("/{id}/edit")
     public String showEditPage(@PathVariable("id") int id, Model model){
         model.addAttribute("book", bookDAO.get(id));
-        model.addAttribute("authors", authorDAO.getAll());
+        model.addAttribute("authors", authorRepository.findAll(Sort.by("name")));
         return "books/edit";
     }
 
