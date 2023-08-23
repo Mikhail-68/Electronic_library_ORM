@@ -8,17 +8,18 @@ import org.springframework.web.bind.annotation.*;
 import ru.egorov.electroniclibrary.dao.BookDAO;
 import ru.egorov.electroniclibrary.models.Book;
 import ru.egorov.electroniclibrary.repositories.AuthorRepository;
+import ru.egorov.electroniclibrary.services.AuthorService;
 
 @Controller
 @RequestMapping("/books")
 public class BookController {
 
-    private final AuthorRepository authorRepository;
+    private final AuthorService authorService;
     private final BookDAO bookDAO;
 
     @Autowired
-    public BookController(AuthorRepository authorRepository, BookDAO bookDAO) {
-        this.authorRepository = authorRepository;
+    public BookController(AuthorService authorService, BookDAO bookDAO) {
+        this.authorService = authorService;
         this.bookDAO = bookDAO;
     }
 
@@ -38,7 +39,7 @@ public class BookController {
 
     @GetMapping("/new")
     public String showCreatePage(@ModelAttribute("book") Book book, Model model) {
-        model.addAttribute("authors", authorRepository.findAll(Sort.by("name")));
+        model.addAttribute("authors", authorService.findAll(Sort.by("name")));
         return "books/new";
     }
 
@@ -53,7 +54,7 @@ public class BookController {
     @GetMapping("/{id}/edit")
     public String showEditPage(@PathVariable("id") int id, Model model){
         model.addAttribute("book", bookDAO.get(id));
-        model.addAttribute("authors", authorRepository.findAll(Sort.by("name")));
+        model.addAttribute("authors", authorService.findAll(Sort.by("name")));
         return "books/edit";
     }
 

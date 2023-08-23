@@ -11,17 +11,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.egorov.electroniclibrary.models.Author;
 import ru.egorov.electroniclibrary.models.Validator.AuthorValidator;
 import ru.egorov.electroniclibrary.repositories.AuthorRepository;
+import ru.egorov.electroniclibrary.services.AuthorService;
 
 @Controller
 @RequestMapping("/authors")
 public class AuthorController {
 
-    private final AuthorRepository authorRepository;
+    private final AuthorService authorService;
     private final AuthorValidator authorValidator;
 
     @Autowired
-    public AuthorController(AuthorRepository authorRepository, AuthorValidator authorValidator) {
-        this.authorRepository = authorRepository;
+    public AuthorController(AuthorService authorService, AuthorValidator authorValidator) {
+        this.authorService = authorService;
         this.authorValidator = authorValidator;
     }
 
@@ -39,7 +40,7 @@ public class AuthorController {
         if (bindingResult.hasErrors()) {
             return "authors/new";
         }
-        authorRepository.save(author);
+        authorService.save(author);
         return "redirect:/books/new";
     }
 
