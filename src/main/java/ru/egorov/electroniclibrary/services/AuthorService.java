@@ -19,16 +19,18 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
 
-    public void save(Author author){
-        authorRepository.save(author);
-    }
-
+    @Transactional(readOnly = true)
     public List<Author> findAll(){
         return authorRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public List<Author> findAll(Sort sort){
         return authorRepository.findAll(sort);
+    }
+
+    public void save(Author author){
+        authorRepository.save(author);
     }
 
 }
